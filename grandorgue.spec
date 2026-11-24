@@ -89,7 +89,6 @@ tar --strip-components=1 -xf %{SOURCE2} -C submodules/LibDwarfLite
 
 %build
 # Yaml-cpp detection is rather broken...
-# The legacy %cmake macro does not select a generator, and the buildroot has no make.
 %cmake -G Ninja \
 	-DDOC_INSTALL_DIR="%{_docdir}"	\
 	-DLIBINSTDIR=%{_lib} \
