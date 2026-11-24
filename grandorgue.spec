@@ -21,6 +21,7 @@ BuildRequires:	docbook-style-xsl
 BuildRequires:	docbook-style-xsl-ns
 BuildRequires:	gettext
 BuildRequires:	imagemagick
+BuildRequires:	librsvg
 BuildRequires:	po4a
 BuildRequires:	xsltproc
 BuildRequires:	libzita-convolver-devel
@@ -90,6 +91,7 @@ tar --strip-components=1 -xf %{SOURCE2} -C submodules/LibDwarfLite
 %build
 # Yaml-cpp detection is rather broken...
 %cmake -G Ninja \
+	-DCMAKE_CXX_SCAN_FOR_MODULES=OFF \
 	-DDOC_INSTALL_DIR="%{_docdir}"	\
 	-DLIBINSTDIR=%{_lib} \
 	-DYAML_CPP_LIBRARIES="%{_libdir}" \
