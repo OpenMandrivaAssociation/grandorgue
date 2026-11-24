@@ -8,10 +8,14 @@ Release:	1
 License:	GPLv2+
 Group:	Sound
 Url:		https://github.com/GrandOrgue/grandorgue
-Source0:	https://github.com/GrandOrgue/grandorgue/archive/%{version}-1.tar.gz?/%{name}-%{version}-1.tar.gz
+Source0:	https://github.com/GrandOrgue/grandorgue/archive/refs/tags/%{version}-1.tar.gz#/%{version}-1.tar.gz
+# The GitHub tag archive leaves these submodules empty. Commits match the 3.17.3-1 gitlinks.
+Source1:	https://github.com/jeremy-rifkin/cpptrace/archive/3db8da80111171c219ab5839905771386bee06b3.tar.gz#/cpptrace-3db8da8.tar.gz
+Source2:	https://github.com/jeremy-rifkin/libdwarf-lite/archive/5dfb2cd2aacf2bf473e5bfea79e41289f88b3a5f.tar.gz#/libdwarf-lite-5dfb2cd.tar.gz
 # dropped (no longer applies): Patch0:		grandorgue-3.17.2-fix-rtmidi-header-path.patch
 # dropped (no longer applies): Patch1:		grandorgue-3.17.2-fix-missing-header.patch
 BuildRequires:	cmake
+BuildRequires:	cmake(zstd)
 BuildRequires:	docbook-style-xsl
 BuildRequires:	docbook-style-xsl-ns
 BuildRequires:	gettext
@@ -76,7 +80,10 @@ Library for %{name} application.
 #----------------------------------------------------------------------------
 
 %prep
-%autosetup -p1 -n grandorgue-3.17.2-1
+%autosetup -p1 -n %{name}-%{version}-1
+# CppTrace fetches libdwarf unless this tree is already at the submodule path.
+tar --strip-components=1 -xf %{SOURCE1} -C submodules/CppTrace
+tar --strip-components=1 -xf %{SOURCE2} -C submodules/LibDwarfLite
 
 
 %build

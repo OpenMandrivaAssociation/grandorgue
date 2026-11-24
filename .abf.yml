@@ -1,2 +1,4 @@
 sources:
   3.17.3-1.tar.gz: 4f2f8816bc8b4a67aa6d06e05062b82f2e895729
+  cpptrace-3db8da8.tar.gz: cad10669d710ed414c54b7e2d09028c2f013fe60
+  libdwarf-lite-5dfb2cd.tar.gz: 177f0133c7092dc2e626037b8726e3801e2c8580
