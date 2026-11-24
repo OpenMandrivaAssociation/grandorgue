@@ -16,6 +16,7 @@ Source2:	https://github.com/jeremy-rifkin/libdwarf-lite/archive/5dfb2cd2aacf2bf4
 # dropped (no longer applies): Patch1:		grandorgue-3.17.2-fix-missing-header.patch
 BuildRequires:	cmake
 BuildRequires:	cmake(zstd)
+BuildRequires:	ninja
 BuildRequires:	docbook-style-xsl
 BuildRequires:	docbook-style-xsl-ns
 BuildRequires:	gettext
@@ -88,7 +89,8 @@ tar --strip-components=1 -xf %{SOURCE2} -C submodules/LibDwarfLite
 
 %build
 # Yaml-cpp detection is rather broken...
-%cmake	\
+# The legacy %cmake macro does not select a generator, and the buildroot has no make.
+%cmake -G Ninja \
 	-DDOC_INSTALL_DIR="%{_docdir}"	\
 	-DLIBINSTDIR=%{_lib} \
 	-DYAML_CPP_LIBRARIES="%{_libdir}" \
@@ -97,12 +99,9 @@ tar --strip-components=1 -xf %{SOURCE2} -C submodules/LibDwarfLite
 	-DUSE_INTERNAL_PORTAUDIO=OFF	\
 	-DUSE_INTERNAL_RTAUDIO=OFF	\
 	-DUSE_INTERNAL_ZITACONVOLVER=OFF
-%make
-
-
-
+ninja -v
 
 %install
-%makeinstall_std -C build
+DESTDIR=%{buildroot} ninja -C build install
 
 %find_lang %{oname}
