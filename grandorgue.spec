@@ -86,6 +86,8 @@ Library for %{name} application.
 # CppTrace fetches libdwarf unless this tree is already at the submodule path.
 tar --strip-components=1 -xf %{SOURCE1} -C submodules/CppTrace
 tar --strip-components=1 -xf %{SOURCE2} -C submodules/LibDwarfLite
+# rtmidi 6.0.0-1 ships includedir=/rtmidi, so RtMidi.h is not on the include path.
+sed -i 's|${RTMIDI_INCLUDE_DIRS}|%{_includedir}/rtmidi|' CMakeLists.txt
 
 
 %build
