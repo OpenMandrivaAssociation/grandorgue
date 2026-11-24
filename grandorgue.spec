@@ -94,6 +94,7 @@ sed -i 's|${RTMIDI_INCLUDE_DIRS}|%{_includedir}/rtmidi|' CMakeLists.txt
 # Yaml-cpp detection is rather broken...
 %cmake -G Ninja \
 	-DCMAKE_CXX_SCAN_FOR_MODULES=OFF \
+	-DCPPTRACE_BUILD_SHARED=OFF \
 	-DDOC_INSTALL_DIR="%{_docdir}"	\
 	-DLIBINSTDIR=%{_lib} \
 	-DYAML_CPP_LIBRARIES="%{_libdir}" \
@@ -106,5 +107,16 @@ ninja -v
 
 %install
 DESTDIR=%{buildroot} ninja -C build install
+# Vendored cpptrace and libdwarf install into the system prefix. GrandOrgue links them in.
+rm -rf %{buildroot}%{_includedir}/cpptrace
+rm -rf %{buildroot}%{_includedir}/ctrace
+rm -f %{buildroot}%{_includedir}/dwarf.h
+rm -f %{buildroot}%{_includedir}/libdwarf.h
+rm -rf %{buildroot}%{_libdir}/cmake/cpptrace
+rm -rf %{buildroot}%{_libdir}/cmake/libdwarf
+rm -f %{buildroot}%{_libdir}/libcpptrace.so*
+rm -f %{buildroot}%{_libdir}/libcpptrace.a
+rm -f %{buildroot}%{_libdir}/libdwarf.a
+rm -f %{buildroot}%{_libdir}/pkgconfig/libdwarf.pc
 
 %find_lang %{oname}
